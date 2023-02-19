@@ -1,27 +1,4 @@
-﻿public class Schedule
-{
-    String departure;
-    String destination;
-    String departureTime;
-    String destinationTime;
-}
-
-public class RailTransport
-{
-    int id;
-    Schedule schedule;
-    int totalPlaces;
-    int maxSpeed;
-    int totalCarriages;
-}
-
-public class ElectricTrain : RailTransport
-{
-    String powerSupply;
-    int voltage;
-}
-
-enum Fuel
+﻿enum Fuel
 {
     DIESEL,
     CARBON,
@@ -29,17 +6,48 @@ enum Fuel
     PETROLEUM
 }
 
-public class DieselTrain : RailTransport
+class Schedule
 {
-    Fuel fuel;
+    public String departure;
+    public String destination;
+    public String departureTime;
+    public String destinationTime;
+    public String date;
 }
 
-public class Subway : ElectricTrain
+class Driver
 {
-    int depth;
+    public String name;
+    public int experience;
+    public int id;
 }
 
-public class Tram : ElectricTrain
+class RailTransport
 {
-    int noisiness;
+    public Schedule schedule;
+    public Driver driver;
+    public int id;
+    public int totalPlaces;
+    public int maxSpeed;
+}
+
+class ElectricTrain : RailTransport
+{
+    public String powerSupply;
+    public int voltage;
+}
+
+class DieselTrain : RailTransport
+{
+    public Fuel fuel;
+}
+
+class Subway : ElectricTrain
+{
+    public int depth;
+}
+
+class Tram : ElectricTrain
+{
+    public int noisiness;
 }
