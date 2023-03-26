@@ -15,6 +15,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
+import javafx.util.StringConverter;
 
 import java.time.LocalDate;
 
@@ -31,7 +32,7 @@ public class MainWindowController {
     private Button btnEdit;
 
     @FXML
-    private ComboBox<String> cbTrainTypes;
+    private ComboBox<TrainType> cbTrainTypes;
 
     @FXML
     private TableView<RailTransport> tableTrains;
@@ -46,7 +47,7 @@ public class MainWindowController {
     void btnAddClick(MouseEvent event) {
         if (cbTrainTypes.getSelectionModel().getSelectedItem() != null) {
             ConcreteTrainFactory factory = new ConcreteTrainFactory();
-            Class<?> trainType = TrainTypes.getTrainType(cbTrainTypes.getSelectionModel().getSelectedItem());
+            Class<?> trainType = cbTrainTypes.getSelectionModel().getSelectedItem().getTrainType();
             AbstractTrainFactory train = factory.getTrain(trainType);
             RailTransport tempTrain = train.add();
             if (tempTrain != null) {
@@ -60,7 +61,7 @@ public class MainWindowController {
     void btnEditClick(MouseEvent event) {
         if (tableTrains.getSelectionModel().getSelectedItem() != null) {
             ConcreteTrainFactory factory = new ConcreteTrainFactory();
-            Class<?> trainType = TrainTypes.getTrainType(cbTrainTypes.getSelectionModel().getSelectedItem());
+            Class<?> trainType = cbTrainTypes.getSelectionModel().getSelectedItem().getTrainType();
             AbstractTrainFactory train = factory.getTrain(trainType);
             train.edit(tableTrains.getSelectionModel().getSelectedItem());
             tableTrains.refresh();
@@ -77,7 +78,7 @@ public class MainWindowController {
     }
 
     private void printSpecificTrains() {
-        Class<?> trainType = TrainTypes.getTrainType(cbTrainTypes.getSelectionModel().getSelectedItem());
+        Class<?> trainType = cbTrainTypes.getSelectionModel().getSelectedItem().getTrainType();
         currTrains.clear();
         for (RailTransport train : trainsList) {
             if (train.getClass().equals(trainType)) {
@@ -88,12 +89,27 @@ public class MainWindowController {
 
     @FXML
     void initialize() {
-        cbTrainTypes.getItems().addAll("Rail Transport", "Electric Train", "Diesel Train", "Tram", "Subway");
+        cbTrainTypes.getItems().addAll(new TrainType(RailTransport.class, "Rail Transport"),
+                new TrainType(ElectricTrain.class, "Electric Train"), new TrainType(DieselTrain.class, "Diesel Train"),
+                new TrainType(Tram.class, "Tram"), new TrainType(Subway.class, "Subway"));
         tcTrainID.setCellValueFactory(new PropertyValueFactory<>("id"));
         tcTrainInfo.setCellValueFactory(new PropertyValueFactory<>("trainInfo"));
         tableTrains.setItems(currTrains);
         cbTrainTypes.getSelectionModel().selectFirst();
         cbTrainTypes.valueProperty().addListener((observableValue, s, t1) -> printSpecificTrains());
+        cbTrainTypes.setConverter(new StringConverter<TrainType>() {
+            @Override
+            public String toString(TrainType trainType) {
+                return trainType.getTrainName();
+            }
+
+            @Override
+            public TrainType fromString(String s) {
+                return cbTrainTypes.getItems().stream().filter(trainType ->
+                        trainType.getTrainName().equals(s)).findFirst().orElse(null);
+            }
+        });
+
 
         //hard code some examples
         trainsList.addAll(
