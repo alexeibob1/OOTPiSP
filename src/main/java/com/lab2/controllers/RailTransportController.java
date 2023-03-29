@@ -1,5 +1,6 @@
 package com.lab2.controllers;
 
+import com.lab2.ErrorWindow;
 import com.lab2.trains.Driver;
 import com.lab2.trains.RailTransport;
 import com.lab2.trains.Schedule;
@@ -74,11 +75,8 @@ public class RailTransportController {
             Stage stage = (Stage) btnConfirm.getScene().getWindow();
             stage.close();
         } else {
-            Alert a = new Alert(Alert.AlertType.ERROR);
-            a.setTitle("Incorrect input!");
-            a.setHeaderText("Error");
-            a.setContentText("Please, check input data and try again!");
-            a.showAndWait();
+            ErrorWindow error = new ErrorWindow();
+            error.showError();
         }
     }
 

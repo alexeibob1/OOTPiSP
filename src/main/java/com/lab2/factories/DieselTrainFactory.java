@@ -9,45 +9,26 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import com.lab2.controllers.FormController;
 
 import java.io.IOException;
 
 public class DieselTrainFactory implements AbstractTrainFactory {
     @Override
-    public DieselTrain add() {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("addDieselTrain.fxml"));
-        try {
-            loader.load();
-        } catch (IOException e) {
-            e.printStackTrace();
-            return null;
-        }
-        Parent root = loader.getRoot();
+    public DieselTrain add(String formFileName, String formTitle) {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource(formFileName));
         Stage stage = new Stage();
-        stage.setScene(new Scene(root));
-        stage.setResizable(false);
-        stage.setTitle("Diesel train");
-        DieselTrainController controller = loader.getController();
+        Object controller = FormController.setFormParameters(formTitle, loader, stage);
         stage.showAndWait();
-        return controller.getDieselTrain();
+        return ((DieselTrainController)controller).getDieselTrain();
     }
 
     @Override
-    public void edit(RailTransport train) {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("addDieselTrain.fxml"));
-        try {
-            loader.load();
-        } catch (IOException e) {
-            e.printStackTrace();
-            return;
-        }
-        Parent root = loader.getRoot();
+    public void edit(RailTransport train, String formName, String formTitle) {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource(formName));
         Stage stage = new Stage();
-        stage.setScene(new Scene(root));
-        stage.setResizable(false);
-        stage.setTitle("Diesel train");
-        DieselTrainController controller = loader.getController();
-        controller.setDieselTrain((DieselTrain) train);
+        Object controller = FormController.setFormParameters(formTitle, loader, stage);
+        ((DieselTrainController)controller).setDieselTrain((DieselTrain) train);
         stage.showAndWait();
     }
 }

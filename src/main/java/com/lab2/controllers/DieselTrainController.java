@@ -1,6 +1,7 @@
 package com.lab2.controllers;
 
 import com.lab2.DataVerifier;
+import com.lab2.ErrorWindow;
 import com.lab2.trains.*;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -76,11 +77,8 @@ public class DieselTrainController {
             Stage stage = (Stage) btnConfirm.getScene().getWindow();
             stage.close();
         } else {
-            Alert a = new Alert(Alert.AlertType.ERROR);
-            a.setTitle("Incorrect input!");
-            a.setHeaderText("Error");
-            a.setContentText("Please, check input data and try again!");
-            a.showAndWait();
+            ErrorWindow error = new ErrorWindow();
+            error.showError();
         }
     }
 

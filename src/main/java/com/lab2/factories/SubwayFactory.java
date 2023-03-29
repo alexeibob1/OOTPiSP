@@ -1,11 +1,10 @@
 package com.lab2.factories;
 
+import com.lab2.controllers.DieselTrainController;
+import com.lab2.controllers.FormController;
 import com.lab2.controllers.SubwayController;
 import com.lab2.controllers.TramController;
-import com.lab2.trains.ElectricTrain;
-import com.lab2.trains.RailTransport;
-import com.lab2.trains.Subway;
-import com.lab2.trains.Tram;
+import com.lab2.trains.*;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -15,40 +14,20 @@ import java.io.IOException;
 
 public class SubwayFactory implements AbstractTrainFactory {
     @Override
-    public Subway add() {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("addSubway.fxml"));
-        try {
-            loader.load();
-        } catch (IOException e) {
-            e.printStackTrace();
-            return null;
-        }
-        Parent root = loader.getRoot();
+    public Subway add(String formFileName, String formTitle) {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource(formFileName));
         Stage stage = new Stage();
-        stage.setScene(new Scene(root));
-        stage.setResizable(false);
-        stage.setTitle("Subway");
-        SubwayController controller = loader.getController();
+        Object controller = FormController.setFormParameters(formTitle, loader, stage);
         stage.showAndWait();
-        return controller.getSubway();
+        return ((SubwayController)controller).getSubway();
     }
 
     @Override
-    public void edit(RailTransport train) {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("addSubway.fxml"));
-        try {
-            loader.load();
-        } catch (IOException e) {
-            e.printStackTrace();
-            return;
-        }
-        Parent root = loader.getRoot();
+    public void edit(RailTransport train, String formName, String formTitle) {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource(formName));
         Stage stage = new Stage();
-        stage.setScene(new Scene(root));
-        stage.setResizable(false);
-        stage.setTitle("Subway");
-        SubwayController controller = loader.getController();
-        controller.setSubway((Subway) train);
+        Object controller = FormController.setFormParameters(formTitle, loader, stage);
+        ((SubwayController)controller).setSubway((Subway) train);
         stage.showAndWait();
     }
 }

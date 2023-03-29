@@ -1,5 +1,7 @@
 package com.lab2.factories;
 
+import com.lab2.controllers.ElectricTrainController;
+import com.lab2.controllers.FormController;
 import com.lab2.controllers.RailTransportController;
 import com.lab2.trains.ElectricTrain;
 import com.lab2.trains.RailTransport;
@@ -13,40 +15,20 @@ import java.net.URL;
 
 public class RailTransportFactory implements AbstractTrainFactory {
     @Override
-    public RailTransport add() {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("addRailTransport.fxml"));
-        try {
-            loader.load();
-        } catch (IOException e) {
-            e.printStackTrace();
-            return null;
-        }
-        Parent root = loader.getRoot();
+    public RailTransport add(String formFileName, String formTitle) {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource(formFileName));
         Stage stage = new Stage();
-        stage.setScene(new Scene(root));
-        stage.setResizable(false);
-        stage.setTitle("Rail transport");
-        RailTransportController controller = loader.getController();
+        Object controller = FormController.setFormParameters(formTitle, loader, stage);
         stage.showAndWait();
-        return controller.getRailTransport();
+        return ((RailTransportController)controller).getRailTransport();
     }
 
     @Override
-    public void edit(RailTransport train) {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("addRailTransport.fxml"));
-        try {
-            loader.load();
-        } catch (IOException e) {
-            e.printStackTrace();
-            return;
-        }
-        Parent root = loader.getRoot();
+    public void edit(RailTransport train, String formName, String formTitle) {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource(formName));
         Stage stage = new Stage();
-        stage.setScene(new Scene(root));
-        stage.setResizable(false);
-        stage.setTitle("Rail transport");
-        RailTransportController controller = loader.getController();
-        controller.setRailTransport(train);
+        Object controller = FormController.setFormParameters(formTitle, loader, stage);
+        ((RailTransportController)controller).setRailTransport(train);
         stage.showAndWait();
     }
 }

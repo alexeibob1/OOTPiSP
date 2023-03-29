@@ -3,7 +3,7 @@ package com.lab2.factories;
 import com.lab2.trains.*;
 
 public class ConcreteTrainFactory {
-    public AbstractTrainFactory getTrain(Class<?> type) {
+    public AbstractTrainFactory getTrainFactory(Class<?> type) {
         AbstractTrainFactory tempFactory = null;
         if (type.equals(RailTransport.class)) {
             tempFactory = new RailTransportFactory();

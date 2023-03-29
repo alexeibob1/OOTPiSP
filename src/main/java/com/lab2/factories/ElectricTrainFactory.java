@@ -1,7 +1,10 @@
 package com.lab2.factories;
 
+import com.lab2.controllers.DieselTrainController;
 import com.lab2.controllers.ElectricTrainController;
+import com.lab2.controllers.FormController;
 import com.lab2.controllers.RailTransportController;
+import com.lab2.trains.DieselTrain;
 import com.lab2.trains.ElectricTrain;
 import com.lab2.trains.RailTransport;
 import javafx.fxml.FXMLLoader;
@@ -13,40 +16,20 @@ import java.io.IOException;
 
 public class ElectricTrainFactory implements AbstractTrainFactory {
     @Override
-    public ElectricTrain add() {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("addElectricTrain.fxml"));
-        try {
-            loader.load();
-        } catch (IOException e) {
-            e.printStackTrace();
-            return null;
-        }
-        Parent root = loader.getRoot();
+    public ElectricTrain add(String formFileName, String formTitle) {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource(formFileName));
         Stage stage = new Stage();
-        stage.setScene(new Scene(root));
-        stage.setResizable(false);
-        stage.setTitle("Electric train");
-        ElectricTrainController controller = loader.getController();
+        Object controller = FormController.setFormParameters(formTitle, loader, stage);
         stage.showAndWait();
-        return controller.getElectricTrain();
+        return ((ElectricTrainController)controller).getElectricTrain();
     }
 
     @Override
-    public void edit(RailTransport train) {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("addElectricTrain.fxml"));
-        try {
-            loader.load();
-        } catch (IOException e) {
-            e.printStackTrace();
-            return;
-        }
-        Parent root = loader.getRoot();
+    public void edit(RailTransport train, String formName, String formTitle) {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource(formName));
         Stage stage = new Stage();
-        stage.setScene(new Scene(root));
-        stage.setResizable(false);
-        stage.setTitle("Electric train");
-        ElectricTrainController controller = loader.getController();
-        controller.setElectricTrain((ElectricTrain) train);
+        Object controller = FormController.setFormParameters(formTitle, loader, stage);
+        ((ElectricTrainController)controller).setElectricTrain((ElectricTrain) train);
         stage.showAndWait();
     }
 }

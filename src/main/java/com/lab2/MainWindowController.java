@@ -1,13 +1,9 @@
 package com.lab2;
 
-import com.lab2.factories.AbstractTrainFactory;
-import com.lab2.factories.ConcreteTrainFactory;
+import com.lab2.factories.*;
 import com.lab2.trains.*;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
@@ -18,10 +14,14 @@ import javafx.scene.input.MouseEvent;
 import javafx.util.StringConverter;
 
 import java.time.LocalDate;
+import java.util.HashMap;
+import java.util.Map;
 
 public class MainWindowController {
     ObservableList<RailTransport> trainsList = FXCollections.observableArrayList();
     ObservableList<RailTransport> currTrains = FXCollections.observableArrayList();
+    Map<Class<?>, String> formTitles = new HashMap<>();
+    Map<Class<?>, String> formFilesNames = new HashMap<>();
     @FXML
     private Button btnAdd;
 
@@ -48,8 +48,8 @@ public class MainWindowController {
         if (cbTrainTypes.getSelectionModel().getSelectedItem() != null) {
             ConcreteTrainFactory factory = new ConcreteTrainFactory();
             Class<?> trainType = cbTrainTypes.getSelectionModel().getSelectedItem().getTrainType();
-            AbstractTrainFactory train = factory.getTrain(trainType);
-            RailTransport tempTrain = train.add();
+            AbstractTrainFactory trainFactory = factory.getTrainFactory(trainType);
+            RailTransport tempTrain = trainFactory.add(formFilesNames.get(trainType), formTitles.get(trainType));
             if (tempTrain != null) {
                 trainsList.add(tempTrain);
                 currTrains.add(tempTrain);
@@ -62,8 +62,8 @@ public class MainWindowController {
         if (tableTrains.getSelectionModel().getSelectedItem() != null) {
             ConcreteTrainFactory factory = new ConcreteTrainFactory();
             Class<?> trainType = cbTrainTypes.getSelectionModel().getSelectedItem().getTrainType();
-            AbstractTrainFactory train = factory.getTrain(trainType);
-            train.edit(tableTrains.getSelectionModel().getSelectedItem());
+            AbstractTrainFactory trainFactory = factory.getTrainFactory(trainType);
+            trainFactory.edit(tableTrains.getSelectionModel().getSelectedItem(), formFilesNames.get(trainType), formTitles.get(trainType));
             tableTrains.refresh();
         }
     }
@@ -85,6 +85,22 @@ public class MainWindowController {
                 currTrains.add(train);
             }
         }
+    }
+
+    public void initFormTitles() {
+        formTitles.put(RailTransport.class, "Rail Transport");
+        formTitles.put(ElectricTrain.class, "Electric Train");
+        formTitles.put(DieselTrain.class, "Diesel Train");
+        formTitles.put(Tram.class, "Tram");
+        formTitles.put(Subway.class, "Subway");
+    }
+
+    public void initFormFilesNames() {
+        formFilesNames.put(RailTransport.class, "addRailTransport.fxml");
+        formFilesNames.put(ElectricTrain.class, "addElectricTrain.fxml");
+        formFilesNames.put(DieselTrain.class, "addDieselTrain.fxml");
+        formFilesNames.put(Tram.class, "addTram.fxml");
+        formFilesNames.put(Subway.class, "addSubway.fxml");
     }
 
     @FXML
@@ -110,6 +126,8 @@ public class MainWindowController {
             }
         });
 
+        initFormTitles();
+        initFormFilesNames();
 
         //hard code some examples
         trainsList.addAll(
