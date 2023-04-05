@@ -20,8 +20,6 @@ import java.util.Map;
 public class MainWindowController {
     ObservableList<RailTransport> trainsList = FXCollections.observableArrayList();
     ObservableList<RailTransport> currTrains = FXCollections.observableArrayList();
-    Map<Class<?>, String> formTitles = new HashMap<>();
-    Map<Class<?>, String> formFilesNames = new HashMap<>();
     @FXML
     private Button btnAdd;
 
@@ -47,9 +45,9 @@ public class MainWindowController {
     void btnAddClick(MouseEvent event) {
         if (cbTrainTypes.getSelectionModel().getSelectedItem() != null) {
             ConcreteTrainFactory factory = new ConcreteTrainFactory();
-            Class<?> trainType = cbTrainTypes.getSelectionModel().getSelectedItem().getTrainType();
-            AbstractTrainFactory trainFactory = factory.getTrainFactory(trainType);
-            RailTransport tempTrain = trainFactory.add(formFilesNames.get(trainType), formTitles.get(trainType));
+            TrainType trainInfo = cbTrainTypes.getSelectionModel().getSelectedItem();
+            AbstractTrainFactory trainFactory = factory.getTrainFactory(trainInfo.getTrainType());
+            RailTransport tempTrain = trainFactory.add(trainInfo.getFileName(), trainInfo.getTrainName());
             if (tempTrain != null) {
                 trainsList.add(tempTrain);
                 currTrains.add(tempTrain);
@@ -61,9 +59,9 @@ public class MainWindowController {
     void btnEditClick(MouseEvent event) {
         if (tableTrains.getSelectionModel().getSelectedItem() != null) {
             ConcreteTrainFactory factory = new ConcreteTrainFactory();
-            Class<?> trainType = cbTrainTypes.getSelectionModel().getSelectedItem().getTrainType();
-            AbstractTrainFactory trainFactory = factory.getTrainFactory(trainType);
-            trainFactory.edit(tableTrains.getSelectionModel().getSelectedItem(), formFilesNames.get(trainType), formTitles.get(trainType));
+            TrainType trainInfo = cbTrainTypes.getSelectionModel().getSelectedItem();
+            AbstractTrainFactory trainFactory = factory.getTrainFactory(trainInfo.getTrainType());
+            trainFactory.edit(tableTrains.getSelectionModel().getSelectedItem(), trainInfo.getFileName(), trainInfo.getTrainName());
             tableTrains.refresh();
         }
     }
@@ -87,27 +85,14 @@ public class MainWindowController {
         }
     }
 
-    public void initFormTitles() {
-        formTitles.put(RailTransport.class, "Rail Transport");
-        formTitles.put(ElectricTrain.class, "Electric Train");
-        formTitles.put(DieselTrain.class, "Diesel Train");
-        formTitles.put(Tram.class, "Tram");
-        formTitles.put(Subway.class, "Subway");
-    }
-
-    public void initFormFilesNames() {
-        formFilesNames.put(RailTransport.class, "addRailTransport.fxml");
-        formFilesNames.put(ElectricTrain.class, "addElectricTrain.fxml");
-        formFilesNames.put(DieselTrain.class, "addDieselTrain.fxml");
-        formFilesNames.put(Tram.class, "addTram.fxml");
-        formFilesNames.put(Subway.class, "addSubway.fxml");
-    }
-
     @FXML
     void initialize() {
-        cbTrainTypes.getItems().addAll(new TrainType(RailTransport.class, "Rail Transport"),
-                new TrainType(ElectricTrain.class, "Electric Train"), new TrainType(DieselTrain.class, "Diesel Train"),
-                new TrainType(Tram.class, "Tram"), new TrainType(Subway.class, "Subway"));
+        cbTrainTypes.getItems().addAll(new TrainType(RailTransport.class, "Rail Transport", "addRailTransport.fxml"),
+                new TrainType(ElectricTrain.class, "Electric Train", "addElectricTrain.fxml"),
+                new TrainType(DieselTrain.class, "Diesel Train", "addDieselTrain.fxml"),
+                new TrainType(Tram.class, "Tram", "addTram.fxml"),
+                new TrainType(Subway.class, "Subway", "addSubway.fxml")
+                );
         tcTrainID.setCellValueFactory(new PropertyValueFactory<>("id"));
         tcTrainInfo.setCellValueFactory(new PropertyValueFactory<>("trainInfo"));
         tableTrains.setItems(currTrains);
@@ -126,8 +111,6 @@ public class MainWindowController {
             }
         });
 
-        initFormTitles();
-        initFormFilesNames();
 
         //hard code some examples
         trainsList.addAll(
@@ -157,6 +140,5 @@ public class MainWindowController {
                         1030, PowerSupply.AC, 20)
         );
         printSpecificTrains();
-        //
     }
 }
