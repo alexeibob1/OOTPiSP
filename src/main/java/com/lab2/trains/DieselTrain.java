@@ -1,6 +1,8 @@
 package com.lab2.trains;
 
-public class DieselTrain extends RailTransport {
+import java.io.Serializable;
+
+public class DieselTrain extends RailTransport implements Serializable {
     private Fuel fuel;
 
     public Fuel getFuel() {
@@ -15,6 +17,10 @@ public class DieselTrain extends RailTransport {
         super(id, totalPlaces, maxSpeed, schedule, driver);
         this.fuel = fuel;
         this.setInfoProperty(this.toString());
+    }
+
+    public DieselTrain() {
+        super();
     }
 
     @Override

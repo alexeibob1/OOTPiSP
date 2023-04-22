@@ -1,6 +1,8 @@
 package com.lab2.trains;
 
-public class Tram extends ElectricTrain {
+import java.io.Serializable;
+
+public class Tram extends ElectricTrain implements Serializable {
     private int noisiness;
 
     public int getNoisiness() {
@@ -16,6 +18,8 @@ public class Tram extends ElectricTrain {
         this.noisiness = noisiness;
         this.setInfoProperty(this.toString());
     }
+
+    public Tram() {super();}
 
     @Override
     public void setInfoProperty(String additionalInfo) {

@@ -1,7 +1,11 @@
 module com.lab2 {
     requires javafx.controls;
     requires javafx.fxml;
-
+    requires java.desktop;
+    requires org.slf4j;
+    requires com.google.gson;
+    requires java.base;
+    requires gson.extras;
 
     opens com.lab2 to javafx.fxml;
     exports com.lab2;
@@ -11,4 +15,6 @@ module com.lab2 {
 
     exports com.lab2.factories;
     exports com.lab2.trains;
+
+    opens com.lab2.trains to com.google.gson;
 }

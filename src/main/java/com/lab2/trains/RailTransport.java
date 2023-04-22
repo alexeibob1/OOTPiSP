@@ -1,9 +1,12 @@
 package com.lab2.trains;
 
-import javafx.beans.property.SimpleIntegerProperty;
-import javafx.beans.property.SimpleStringProperty;
+import java.io.Serial;
+import java.io.Serializable;
 
-public class RailTransport {
+public class RailTransport implements Serializable {
+    @Serial
+    private static final long serialVersionUID = 1L;
+
     private Schedule schedule;
     private int id;
     private int totalPlaces;
@@ -58,7 +61,7 @@ public class RailTransport {
         this.trainInfo = trainInfo;
     }
 
-    private String trainInfo;
+    private transient String trainInfo;
 
     public RailTransport(int id, int totalPlaces, int maxSpeed, Schedule schedule, Driver driver) {
         this.id = id;
@@ -68,6 +71,8 @@ public class RailTransport {
         this.driver = driver;
         this.setInfoProperty(this.toString());
     }
+
+    public RailTransport() {}
 
     public void setInfoProperty(String additionalInfo) {
         this.trainInfo = additionalInfo;

@@ -1,6 +1,8 @@
 package com.lab2.trains;
 
-public class ElectricTrain extends RailTransport {
+import java.io.Serializable;
+
+public class ElectricTrain extends RailTransport implements Serializable {
     private int voltage;
     private PowerSupply powerSupply;
 
@@ -26,6 +28,8 @@ public class ElectricTrain extends RailTransport {
         this.powerSupply = powerSupply;
         this.setInfoProperty(this.toString());
     }
+
+    public ElectricTrain() {super();}
 
     @Override
     public void setInfoProperty(String additionalInfo) {

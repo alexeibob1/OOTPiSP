@@ -1,6 +1,8 @@
 package com.lab2.trains;
 
-public class Driver {
+import java.io.Serializable;
+
+public class Driver implements Serializable {
     private int experience;
     private int id;
     private String name;
@@ -34,6 +36,8 @@ public class Driver {
         this.id = id;
         this.name = name;
     }
+
+    public Driver() {}
 
     @Override
     public String toString() {

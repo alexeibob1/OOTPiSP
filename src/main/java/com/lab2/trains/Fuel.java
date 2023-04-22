@@ -1,5 +1,7 @@
 package com.lab2.trains;
 
-public enum Fuel {
+import java.io.Serializable;
+
+public enum Fuel implements Serializable {
     DIESEL, CARBON, BIOMASS, PETROLEUM
 }

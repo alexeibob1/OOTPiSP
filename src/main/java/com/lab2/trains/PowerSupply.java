@@ -1,5 +1,7 @@
 package com.lab2.trains;
 
-public enum PowerSupply {
+import java.io.Serializable;
+
+public enum PowerSupply implements Serializable {
     DC, AC, IMP
 }

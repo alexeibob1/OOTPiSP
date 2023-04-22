@@ -1,8 +1,9 @@
 package com.lab2.trains;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 
-public class Schedule {
+public class Schedule implements Serializable {
     private LocalDate departureDate;
     private LocalDate destinationDate;
     private String departure;
@@ -46,6 +47,8 @@ public class Schedule {
         this.departureDate = departureDate;
         this.destinationDate = destinationDate;
     }
+
+    public Schedule() {}
 
     @Override
     public String toString() {

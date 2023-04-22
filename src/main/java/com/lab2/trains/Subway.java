@@ -1,6 +1,8 @@
 package com.lab2.trains;
 
-public class Subway extends ElectricTrain {
+import java.io.Serializable;
+
+public class Subway extends ElectricTrain implements Serializable {
     private int depth;
 
     public int getDepth() {
@@ -12,6 +14,8 @@ public class Subway extends ElectricTrain {
         this.depth = depth;
         this.setInfoProperty(this.toString());
     }
+
+    public Subway() {super();}
 
     public void setDepth(int depth) {
         this.depth = depth;
