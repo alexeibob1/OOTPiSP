@@ -1,14 +1,4 @@
 TRAIN: com.lab2.trains.RailTransport
-INNER: com.lab2.trains.Schedule
-NAME: departureDate
-VALUE: 2023-02-01
-NAME: destinationDate
-VALUE: 2023-02-01
-NAME: departure
-VALUE: Molodechno
-NAME: destination
-VALUE: Minsk
-END
 NAME: id
 VALUE: 372
 NAME: totalPlaces
@@ -266,3 +256,4 @@ NAME: name
 VALUE: Eugen
 END
 
+FIN
