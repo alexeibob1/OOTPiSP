@@ -266,4 +266,30 @@ NAME: name
 VALUE: Eugen
 END
 
+TRAIN: com.lab2.trains.RailTransport
+INNER: schedule
+NAME: departureDate
+VALUE: 2023-04-14
+NAME: destinationDate
+VALUE: 2023-04-22
+NAME: departure
+VALUE:  db dsfr84ry 43r 4;;;//\b
+NAME: destination
+VALUE:  db dsfr84ry 43r 4;;;//\b
+END
+NAME: id
+VALUE: 63256
+NAME: totalPlaces
+VALUE: 653653
+NAME: maxSpeed
+VALUE: 5436
+INNER: driver
+NAME: experience
+VALUE: 62356
+NAME: id
+VALUE: 53536
+NAME: name
+VALUE:  db dsfr84ry 43r 4;;;//\b
+END
+
 END
