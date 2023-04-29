@@ -1,10 +1,10 @@
 package com.lab2.serializers;
 
 import com.lab2.ErrorWindow;
-import com.lab2.trains.Driver;
-import com.lab2.trains.RailTransport;
-import com.lab2.trains.Schedule;
+import com.lab2.trains.*;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.scene.Parent;
 import javafx.scene.control.Alert;
 
 import java.io.*;
@@ -12,6 +12,7 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -22,8 +23,6 @@ public class TextSerializer implements Serializable {
         Class<?> oClass = o.getClass();
         if (o instanceof RailTransport) {
             writer.println("TRAIN: " + oClass.getName());
-        } else {
-            writer.println("INNER: " + oClass.getName());
         }
         Class<?> parentClass = oClass.getSuperclass();
         List<Field> fields = new ArrayList<>(Arrays.asList(oClass.getDeclaredFields()));
@@ -38,6 +37,7 @@ public class TextSerializer implements Serializable {
             String fieldName = field.getName();
             List<Field> objFields = new ArrayList<>(Arrays.asList(fieldType.getDeclaredFields()));
             if (objFields.size() != 0 && (fieldType == Schedule.class || fieldType == Driver.class) ) {
+                writer.println("INNER: " + fieldName);
                 serializeObject(field.get(o), writer, true);
             } else {
                 //writer.println("TYPE: " + fieldType);
@@ -57,7 +57,7 @@ public class TextSerializer implements Serializable {
                 serializeObject(train, writer, false);
                 writer.println();
             }
-            writer.print("FIN");
+            writer.print("END");
         } catch (Exception e) {
             ErrorWindow alert = new ErrorWindow();
             alert.showError(Alert.AlertType.ERROR, "Error!", "Error while text serialization", "During serialization to txt an error occurred. Please, try again");
@@ -86,7 +86,7 @@ public class TextSerializer implements Serializable {
                 {0, 0, 0, 0, 0, 0, 0}
         };
         int[] finalState = {0, 0, 0, 0, 0, 1, 0};
-        ArrayList<RailTransport> trains = null;
+        ArrayList<RailTransport> trains = new ArrayList<>();
 
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream))) {
             String line = "";
@@ -96,26 +96,53 @@ public class TextSerializer implements Serializable {
             Object innerObject = null;
             String fieldName = "";
             String fieldValue = "";
-            String innerClassName = "";
+            String innerFieldName = "";
             String trainClassName = "";
             Class<?> trainClass = null;
+            Class<?> innerClass = null;
             while ((line = reader.readLine()) != null) {
                 TokenType token = defineTokenType(line);
                 prevState = state;
                 state = transitions[state][token.ordinal()];
-                if (state == 2) {
+                if (state == 1) {
+                    trains.add((RailTransport) train);
+                }
+                else if (state == 2) {
                     if (prevState == 3) {
                         fieldValue = line.substring(line.lastIndexOf("VALUE:") + 6).trim();
                         String setMethodName = "set" + fieldName.substring(0, 1).toUpperCase() + fieldName.substring(1);
-                        Field field = trainClass.getDeclaredField(fieldName);
-                        field.setAccessible(true);
-                        Class<?> fieldType = field.getType();
-                        switch (fieldType.getName()) {
-                            case "int": {
-                                int intVal = Integer.parseInt(fieldValue);
-                                Method setMethod = trainClass.getMethod(setMethodName, int.class);
-                                setMethod.invoke(train, intVal);
+
+                        Field field = null;
+                        Class<?> parentClass = trainClass;
+                        while (parentClass != null) {
+                            try {
+                                field = parentClass.getDeclaredField(fieldName);
+                            } catch (Exception e) {
                             }
+                            parentClass = parentClass.getSuperclass();
+                        }
+
+
+                        field.setAccessible(true);
+                        String fieldTypeName = field.getType().getName().toLowerCase();
+                        if (fieldTypeName.contains("int")) {
+                            int intVal = Integer.parseInt(fieldValue);
+                            Method setMethod = trainClass.getMethod(setMethodName, int.class);
+                            setMethod.invoke(train, intVal);
+                        }
+                        else if (fieldTypeName.contains("string")) {
+                            Method setMethod = trainClass.getMethod(setMethodName, String.class);
+                            setMethod.invoke(train, fieldValue);
+                        }
+                        else if (fieldTypeName.contains("powersupply")) {
+                            PowerSupply powerSupply = PowerSupply.valueOf(fieldValue);
+                            Method setMethod = trainClass.getMethod(setMethodName, PowerSupply.class);
+                            setMethod.invoke(train, powerSupply);
+                        }
+                        else if (fieldTypeName.contains("fuel")) {
+                            Fuel fuel = Fuel.valueOf(fieldValue);
+                            Method setMethod = trainClass.getMethod(setMethodName, Fuel.class);
+                            setMethod.invoke(train, fuel);
                         }
                     }
                     else if (prevState == 1) {
@@ -124,16 +151,64 @@ public class TextSerializer implements Serializable {
                         Constructor<?> constructor = trainClass.getConstructor();
                         train = constructor.newInstance();
                     }
+                    else if (prevState == 4) {
+                        String setMethodName = "set" + innerFieldName.substring(0, 1).toUpperCase() + innerFieldName.substring(1);
+                        Method setMethod = trainClass.getMethod(setMethodName, innerClass);
+                        setMethod.invoke(train, innerObject);
+                    }
                 }
-                else if (state == 3) {
+                else if (state == 3 || state == 5) {
                     fieldName = line.substring(line.lastIndexOf("NAME:") + 5).trim();
+                }
+                else if (state == 4) {
+                    if (prevState == 2) {
+                        innerFieldName = line.substring(line.lastIndexOf("INNER:") + 6).trim();
+                        //Field field = trainClass.getField(innerFieldName);
+
+                        Field field = null;
+                        Class<?> parentClass = trainClass;
+                        while (parentClass != null) {
+                            try {
+                                field = parentClass.getDeclaredField(innerFieldName);
+                            } catch (Exception e) {
+                            }
+                            parentClass = parentClass.getSuperclass();
+                        }
+
+                        innerClass = field.getType();
+                        Constructor<?> constructor = innerClass.getConstructor();
+                        innerObject = constructor.newInstance();
+                    } else if (prevState == 5) {
+                        fieldValue = line.substring(line.lastIndexOf("VALUE:") + 6).trim();
+                        String setMethodName = "set" + fieldName.substring(0, 1).toUpperCase() + fieldName.substring(1);
+                        Field field = innerClass.getDeclaredField(fieldName);
+                        field.setAccessible(true);
+                        Class<?> fieldType = field.getType();
+                        String fieldTypeName = fieldType.getName().toLowerCase();
+                        if (fieldTypeName.contains("int")) {
+                            int intVal = Integer.parseInt(fieldValue);
+                            Method setMethod = innerClass.getMethod(setMethodName, int.class);
+                            setMethod.invoke(innerObject, intVal);
+                        } else if (fieldTypeName.contains("string")) {
+                            Method setMethod = innerClass.getMethod(setMethodName, String.class);
+                            setMethod.invoke(innerObject, fieldValue);
+                        } else if (fieldTypeName.contains("localdate")) {
+                            Method setMethod = innerClass.getMethod(setMethodName, LocalDate.class);
+                            LocalDate date = LocalDate.parse(fieldValue);
+                            setMethod.invoke(innerObject, date);
+                        }
+                    }
                 }
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-        return null;
+        for (RailTransport train : trains) {
+            train.setInfoProperty();
+        }
+
+        return FXCollections.observableArrayList(trains);
     }
 
     public TokenType defineTokenType(String line) {
@@ -147,7 +222,7 @@ public class TextSerializer implements Serializable {
             return TokenType.VALUE;
         } else if (line.startsWith("END")) {
             return TokenType.END;
-        } else if (line.equals("\n")) {
+        } else if (line.equals("")) {
             return TokenType.LINE;
         }
         return TokenType.ERROR;

@@ -1,11 +1,21 @@
 TRAIN: com.lab2.trains.RailTransport
+INNER: schedule
+NAME: departureDate
+VALUE: 2023-02-01
+NAME: destinationDate
+VALUE: 2023-02-01
+NAME: departure
+VALUE: Molodechno
+NAME: destination
+VALUE: Minsk
+END
 NAME: id
 VALUE: 372
 NAME: totalPlaces
 VALUE: 650
 NAME: maxSpeed
 VALUE: 150
-INNER: com.lab2.trains.Driver
+INNER: driver
 NAME: experience
 VALUE: 12
 NAME: id
@@ -15,7 +25,7 @@ VALUE: Alexei
 END
 
 TRAIN: com.lab2.trains.RailTransport
-INNER: com.lab2.trains.Schedule
+INNER: schedule
 NAME: departureDate
 VALUE: 2023-04-02
 NAME: destinationDate
@@ -31,7 +41,7 @@ NAME: totalPlaces
 VALUE: 670
 NAME: maxSpeed
 VALUE: 140
-INNER: com.lab2.trains.Driver
+INNER: driver
 NAME: experience
 VALUE: 5
 NAME: id
@@ -45,7 +55,7 @@ NAME: voltage
 VALUE: 540
 NAME: powerSupply
 VALUE: IMP
-INNER: com.lab2.trains.Schedule
+INNER: schedule
 NAME: departureDate
 VALUE: 2023-05-02
 NAME: destinationDate
@@ -61,7 +71,7 @@ NAME: totalPlaces
 VALUE: 635
 NAME: maxSpeed
 VALUE: 230
-INNER: com.lab2.trains.Driver
+INNER: driver
 NAME: experience
 VALUE: 23
 NAME: id
@@ -75,7 +85,7 @@ NAME: voltage
 VALUE: 320
 NAME: powerSupply
 VALUE: DC
-INNER: com.lab2.trains.Schedule
+INNER: schedule
 NAME: departureDate
 VALUE: 2023-04-12
 NAME: destinationDate
@@ -91,7 +101,7 @@ NAME: totalPlaces
 VALUE: 1200
 NAME: maxSpeed
 VALUE: 150
-INNER: com.lab2.trains.Driver
+INNER: driver
 NAME: experience
 VALUE: 8
 NAME: id
@@ -103,7 +113,7 @@ END
 TRAIN: com.lab2.trains.DieselTrain
 NAME: fuel
 VALUE: PETROLEUM
-INNER: com.lab2.trains.Schedule
+INNER: schedule
 NAME: departureDate
 VALUE: 2023-04-01
 NAME: destinationDate
@@ -119,7 +129,7 @@ NAME: totalPlaces
 VALUE: 5
 NAME: maxSpeed
 VALUE: 76
-INNER: com.lab2.trains.Driver
+INNER: driver
 NAME: experience
 VALUE: 15
 NAME: id
@@ -135,7 +145,7 @@ NAME: voltage
 VALUE: 654
 NAME: powerSupply
 VALUE: AC
-INNER: com.lab2.trains.Schedule
+INNER: schedule
 NAME: departureDate
 VALUE: 2023-04-02
 NAME: destinationDate
@@ -151,7 +161,7 @@ NAME: totalPlaces
 VALUE: 85
 NAME: maxSpeed
 VALUE: 65
-INNER: com.lab2.trains.Driver
+INNER: driver
 NAME: experience
 VALUE: 4
 NAME: id
@@ -167,7 +177,7 @@ NAME: voltage
 VALUE: 242
 NAME: powerSupply
 VALUE: IMP
-INNER: com.lab2.trains.Schedule
+INNER: schedule
 NAME: departureDate
 VALUE: 2023-04-05
 NAME: destinationDate
@@ -183,7 +193,7 @@ NAME: totalPlaces
 VALUE: 90
 NAME: maxSpeed
 VALUE: 85
-INNER: com.lab2.trains.Driver
+INNER: driver
 NAME: experience
 VALUE: 7
 NAME: id
@@ -199,7 +209,7 @@ NAME: voltage
 VALUE: 1020
 NAME: powerSupply
 VALUE: AC
-INNER: com.lab2.trains.Schedule
+INNER: schedule
 NAME: departureDate
 VALUE: 2023-04-06
 NAME: destinationDate
@@ -215,7 +225,7 @@ NAME: totalPlaces
 VALUE: 700
 NAME: maxSpeed
 VALUE: 90
-INNER: com.lab2.trains.Driver
+INNER: driver
 NAME: experience
 VALUE: 13
 NAME: id
@@ -231,7 +241,7 @@ NAME: voltage
 VALUE: 1030
 NAME: powerSupply
 VALUE: AC
-INNER: com.lab2.trains.Schedule
+INNER: schedule
 NAME: departureDate
 VALUE: 2023-04-07
 NAME: destinationDate
@@ -247,7 +257,7 @@ NAME: totalPlaces
 VALUE: 750
 NAME: maxSpeed
 VALUE: 100
-INNER: com.lab2.trains.Driver
+INNER: driver
 NAME: experience
 VALUE: 3
 NAME: id
@@ -256,4 +266,4 @@ NAME: name
 VALUE: Eugen
 END
 
-FIN
+END
