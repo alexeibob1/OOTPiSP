@@ -1,10 +1,7 @@
 package com.lab2;
 
 import com.lab2.factories.*;
-import com.lab2.serializers.BinarySerializer;
-import com.lab2.serializers.Serializable;
-import com.lab2.serializers.SerializerDescription;
-import com.lab2.serializers.JsonSerializer;
+import com.lab2.serializers.*;
 import com.lab2.trains.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -29,7 +26,6 @@ import java.time.LocalDate;
 public class MainWindowController {
     ObservableList<RailTransport> trainsList = FXCollections.observableArrayList();
     ObservableList<RailTransport> currTrains = FXCollections.observableArrayList();
-    ObservableList<SerializerDescription> serializersList = FXCollections.observableArrayList();
     @FXML
     private Button btnAdd;
 
@@ -92,46 +88,34 @@ public class MainWindowController {
         }
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Save to file...");
-        for (SerializerDescription serializerDescription : serializersList) {
-            fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter(serializerDescription.toString(), "*." + serializerDescription.getExtension()));
-        }
+        SerializerFactory serializerFactory = new SerializerFactory();
+        serializerFactory.setFilters(fileChooser);
         Stage currStage = (Stage)btnAdd.getScene().getWindow();
         File file = fileChooser.showSaveDialog(currStage);
         if (file != null) {
             String extension = file.getName().substring(file.getName().lastIndexOf('.') + 1);
-            Serializable serializer = null;
-            for (SerializerDescription serializerDescription : serializersList) {
-                if (serializerDescription.getExtension().equals(extension)) {
-                    serializer = serializerDescription.getSerializer().newInstance();
-                }
-            }
+            Serializable serializer = serializerFactory.getSerializerDescription(extension).getSerializer();
             serializer.serialize(trainsList, new FileOutputStream(file));
         }
     }
 
     @FXML
     void onBtnOpenFileClicked(ActionEvent event) throws InstantiationException, IllegalAccessException, FileNotFoundException {
-        if (trainsList.isEmpty()) {
-            return;
-        }
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Open file...");
-        for (SerializerDescription serializerDescription : serializersList) {
-            fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter(serializerDescription.toString(), "*." + serializerDescription.getExtension()));
-        }
+        SerializerFactory serializerFactory = new SerializerFactory();
+        serializerFactory.setFilters(fileChooser);
         Stage currStage = (Stage)btnAdd.getScene().getWindow();
         File file = fileChooser.showOpenDialog(currStage);
         if (file != null) {
             if (file.length() != 0) {
                 String extension = file.getName().substring(file.getName().lastIndexOf('.') + 1);
-                Serializable serializer = null;
-                for (SerializerDescription serializerDescription : serializersList) {
-                    if (serializerDescription.getExtension().equals(extension)) {
-                        serializer = serializerDescription.getSerializer().newInstance();
-                    }
+                Serializable serializer = serializerFactory.getSerializerDescription(extension).getSerializer();
+                ObservableList<RailTransport> deserializationList = serializer.deserialize(new FileInputStream(file));
+                if (deserializationList.size() != 0) {
+                    trainsList = deserializationList;
+                    printSpecificTrains();
                 }
-                trainsList = serializer.deserialize(new FileInputStream(file));
-                printSpecificTrains();
             }
         }
     }
@@ -154,9 +138,6 @@ public class MainWindowController {
                 new TrainType(Tram.class, "Tram", "addTram.fxml"),
                 new TrainType(Subway.class, "Subway", "addSubway.fxml")
                 );
-
-        serializersList.addAll(new SerializerDescription(BinarySerializer.class, "Binary file", "bin"),
-                               new SerializerDescription(JsonSerializer.class, "JSON file", "json"));
 
 
         tcTrainID.setCellValueFactory(new PropertyValueFactory<>("id"));

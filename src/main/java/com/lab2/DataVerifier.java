@@ -4,7 +4,8 @@ import java.time.LocalDate;
 
 public class DataVerifier {
     public static boolean isCorrectString(String s) {
-        return s.matches("[A-Za-zА-Яа-я., ]+") && s.length() < 50;
+//        return s.matches("[A-Za-zА-Яа-я., ]+") && s.length() < 50;
+        return true;
     }
 
     public static boolean isCorrectInteger(String s) {

@@ -50,8 +50,7 @@ public class Schedule implements Serializable {
 
     public Schedule() {}
 
-    @Override
-    public String toString() {
+    public String toTableString() {
         StringBuilder sb = new StringBuilder();
         sb.append("Departure from ");
         sb.append(this.departure);
@@ -63,4 +62,10 @@ public class Schedule implements Serializable {
         sb.append(this.destinationDate.toString());
         return sb.toString();
     }
+
+//    @Override
+//    public String toString() {
+//        return "departure\n" + departure + "\n" + "destination\n" + destination + "\n" + "departureDate" + "\n" +
+//                departureDate + "\n" + "destinationDate" + "\n" + destinationDate + "\n";
+//    }
 }

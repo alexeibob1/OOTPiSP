@@ -26,7 +26,7 @@ public class ElectricTrain extends RailTransport implements Serializable {
         super(id, totalPlaces, maxSpeed, schedule, driver);
         this.voltage = voltage;
         this.powerSupply = powerSupply;
-        this.setInfoProperty(this.toString());
+        this.setInfoProperty(this.toTableString());
     }
 
     public ElectricTrain() {super();}
@@ -37,9 +37,9 @@ public class ElectricTrain extends RailTransport implements Serializable {
     }
 
     @Override
-    public String toString() {
+    public String toTableString() {
         StringBuilder sb = new StringBuilder();
-        sb.append(super.toString());
+        sb.append(super.toTableString());
         sb.append(".\n");
         sb.append("Voltage: ");
         sb.append(this.getVoltage());
@@ -47,4 +47,9 @@ public class ElectricTrain extends RailTransport implements Serializable {
         sb.append(this.getPowerSupply());
         return sb.toString();
     }
+
+//    @Override
+//    public String toString() {
+//        return super.toString() + "powerSupply\n" + powerSupply.toString() + "\n" + "voltage\n" + voltage + "\n";
+//    }
 }

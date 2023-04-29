@@ -4,8 +4,6 @@ import java.io.Serial;
 import java.io.Serializable;
 
 public class RailTransport implements Serializable {
-    @Serial
-    private static final long serialVersionUID = 1L;
 
     private Schedule schedule;
     private int id;
@@ -69,7 +67,7 @@ public class RailTransport implements Serializable {
         this.maxSpeed = maxSpeed;
         this.schedule = schedule;
         this.driver = driver;
-        this.setInfoProperty(this.toString());
+        this.setInfoProperty(this.toTableString());
     }
 
     public RailTransport() {}
@@ -78,16 +76,24 @@ public class RailTransport implements Serializable {
         this.trainInfo = additionalInfo;
     }
 
-    @Override
-    public String toString() {
+    public String toTableString() {
         StringBuilder sb = new StringBuilder();
-        sb.append(this.schedule.toString());
+        sb.append(this.schedule.toTableString());
         sb.append(".\n");
-        sb.append(this.driver.toString());
+        sb.append(this.driver.toTableString());
         sb.append(".\nTotal places: ");
         sb.append(this.totalPlaces);
         sb.append(". Max speed: ");
         sb.append(this.maxSpeed);
         return sb.toString();
     }
+
+//    @Override
+//    public String toString() {
+//        return "id\n" + id + "\n" +
+//                "totalPlaces\n" + totalPlaces + "\n" +
+//                "maxSpeed\n" + maxSpeed + "\n" +
+//                "schedule\n" + schedule.toString() +
+//                "driver\n" + driver.toString() + "\n";
+//    }
 }

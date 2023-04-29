@@ -86,7 +86,7 @@ public class SubwayController {
             stage.close();
         } else {
             ErrorWindow error = new ErrorWindow();
-            error.showError();
+            error.showError(Alert.AlertType.ERROR, "Error", "Incorrect input", "Check entered input and try again");
         }
     }
 

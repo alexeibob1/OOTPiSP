@@ -39,8 +39,7 @@ public class Driver implements Serializable {
 
     public Driver() {}
 
-    @Override
-    public String toString() {
+    public String toTableString() {
         StringBuilder sb = new StringBuilder();
         sb.append("Driver's info: Name - ");
         sb.append(this.name);
@@ -50,4 +49,10 @@ public class Driver implements Serializable {
         sb.append(this.experience);
         return sb.toString();
     }
+
+//    @Override
+//    public String toString() {
+//        return "id\n" + id + "\n" + "experience\n" + experience + "\n" + "name" + "\n" +
+//                name + "\n";
+//    }
 }

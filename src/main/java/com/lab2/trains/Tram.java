@@ -16,7 +16,7 @@ public class Tram extends ElectricTrain implements Serializable {
     public Tram(int id, int totalPlaces, int maxSpeed, Schedule schedule, Driver driver, int voltage, PowerSupply powerSupply, int noisiness) {
         super(id, totalPlaces, maxSpeed, schedule, driver, voltage, powerSupply);
         this.noisiness = noisiness;
-        this.setInfoProperty(this.toString());
+        this.setInfoProperty(this.toTableString());
     }
 
     public Tram() {super();}
@@ -27,11 +27,16 @@ public class Tram extends ElectricTrain implements Serializable {
     }
 
     @Override
-    public String toString() {
+    public String toTableString() {
         StringBuilder sb = new StringBuilder();
-        sb.append(super.toString());
+        sb.append(super.toTableString());
         sb.append(".\nNoisiness: ");
         sb.append(this.getNoisiness());
         return sb.toString();
     }
+
+//    @Override
+//    public String toString() {
+//        return super.toString() + "noisiness" + noisiness + "\n";
+//    }
 }

@@ -2,8 +2,8 @@ package com.lab2.serializers;
 
 public class SerializerDescription {
     private Class<? extends Serializable> serializer;
-    private String name;
-    private String extension;
+    private final String name;
+    private final String extension;
 
     public SerializerDescription(Class<? extends Serializable> serializer, String name, String extension) {
         this.serializer = serializer;
@@ -11,8 +11,8 @@ public class SerializerDescription {
         this.extension = extension;
     }
 
-    public Class<? extends Serializable> getSerializer() {
-        return serializer;
+    public Serializable getSerializer() throws InstantiationException, IllegalAccessException {
+        return this.serializer.newInstance();
     }
 
     public String getExtension() {

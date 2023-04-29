@@ -3,11 +3,11 @@ package com.lab2;
 import javafx.scene.control.Alert;
 
 public class ErrorWindow {
-    public void showError() {
-        Alert a = new Alert(Alert.AlertType.ERROR);
-        a.setTitle("Incorrect input!");
-        a.setHeaderText("Error");
-        a.setContentText("Please, check input data and try again!");
+    public void showError(Alert.AlertType type, String title, String header, String content) {
+        Alert a = new Alert(type);
+        a.setTitle(title);
+        a.setHeaderText(header);
+        a.setContentText(content);
         a.showAndWait();
     }
 }
