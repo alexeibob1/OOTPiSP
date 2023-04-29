@@ -34,7 +34,7 @@ public class BinarySerializer implements Serializable {
             res.addAll(trains);
             objectInputStream.close();
             for (RailTransport train : res) {
-                train.setInfoProperty(train.toString());
+                train.setInfoProperty();
             }
         } catch (IOException | ClassNotFoundException e) {
             ErrorWindow alert = new ErrorWindow();

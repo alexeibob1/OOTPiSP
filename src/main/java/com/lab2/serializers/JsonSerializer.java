@@ -65,7 +65,7 @@ public class JsonSerializer implements Serializable {
             trains = gson.fromJson(json, type);
             res.addAll(trains);
             for (RailTransport train : res) {
-                train.setInfoProperty(train.toString());
+                train.setInfoProperty();
             }
         } catch (Exception e) {
             ErrorWindow alert = new ErrorWindow();

@@ -66,7 +66,7 @@ public class DieselTrainController {
                 dieselTrain.setMaxSpeed(Integer.parseInt(eMaxSpeed.getText()));
                 dieselTrain.setTotalPlaces(Integer.parseInt(eTotalPlaces.getText()));
                 dieselTrain.setFuel(cbFuel.getValue());
-                dieselTrain.setInfoProperty(dieselTrain.toString());
+                dieselTrain.setInfoProperty();
             } else {
                 dieselTrain = new DieselTrain(Integer.parseInt(eTrainID.getText()), Integer.parseInt(eTotalPlaces.getText()),
                         Integer.parseInt(eMaxSpeed.getText()), new Schedule(eDeparture.getText(), eDestination.getText(),

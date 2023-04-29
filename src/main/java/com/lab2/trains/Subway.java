@@ -12,18 +12,18 @@ public class Subway extends ElectricTrain implements Serializable {
     public Subway(int id, int totalPlaces, int maxSpeed, Schedule schedule, Driver driver, int voltage, PowerSupply powerSupply, int depth) {
         super(id, totalPlaces, maxSpeed, schedule, driver, voltage, powerSupply);
         this.depth = depth;
-        this.setInfoProperty(this.toTableString());
+        this.setInfoProperty();
     }
 
-    public Subway() {super();}
+    public Subway() {}
 
     public void setDepth(int depth) {
         this.depth = depth;
     }
 
     @Override
-    public void setInfoProperty(String additionalInfo) {
-        super.setInfoProperty(additionalInfo);
+    public void setInfoProperty() {
+        super.setInfoProperty();
     }
 
     @Override
@@ -34,9 +34,4 @@ public class Subway extends ElectricTrain implements Serializable {
         sb.append(this.getDepth());
         return sb.toString();
     }
-
-//    @Override
-//    public String toString() {
-//        return super.toString() + "depth\n" + depth + "\n";
-//    }
 }

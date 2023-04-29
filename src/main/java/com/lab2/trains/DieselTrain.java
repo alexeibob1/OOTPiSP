@@ -16,7 +16,7 @@ public class DieselTrain extends RailTransport implements Serializable {
     public DieselTrain(int id, int totalPlaces, int maxSpeed, Schedule schedule, Driver driver, Fuel fuel) {
         super(id, totalPlaces, maxSpeed, schedule, driver);
         this.fuel = fuel;
-        this.setInfoProperty(this.toTableString());
+        this.setInfoProperty();
     }
 
     public DieselTrain() {
@@ -24,8 +24,8 @@ public class DieselTrain extends RailTransport implements Serializable {
     }
 
     @Override
-    public void setInfoProperty(String additionalInfo) {
-        super.setInfoProperty(additionalInfo);
+    public void setInfoProperty() {
+        super.setInfoProperty();
     }
 
     @Override
@@ -36,9 +36,4 @@ public class DieselTrain extends RailTransport implements Serializable {
         sb.append(this.getFuel());
         return sb.toString();
     }
-
-//    @Override
-//    public String toString() {
-//        return super.toString() + "fuel\n" + fuel.toString() + "\n";
-//    }
 }

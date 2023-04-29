@@ -64,7 +64,7 @@ public class RailTransportController {
                 railTransport.setId(Integer.parseInt(eTrainID.getText()));
                 railTransport.setMaxSpeed(Integer.parseInt(eMaxSpeed.getText()));
                 railTransport.setTotalPlaces(Integer.parseInt(eTotalPlaces.getText()));
-                railTransport.setInfoProperty(railTransport.toString());
+                railTransport.setInfoProperty();
             } else {
                 railTransport = new RailTransport(Integer.parseInt(eTrainID.getText()), Integer.parseInt(eTotalPlaces.getText()),
                         Integer.parseInt(eMaxSpeed.getText()), new Schedule(eDeparture.getText(), eDestination.getText(),

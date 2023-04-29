@@ -70,7 +70,7 @@ public class ElectricTrainController {
                 electricTrain.setTotalPlaces(Integer.parseInt(eTotalPlaces.getText()));
                 electricTrain.setVoltage(Integer.parseInt(eVoltage.getText()));
                 electricTrain.setPowerSupply(cbPowerSupply.getValue());
-                electricTrain.setInfoProperty(electricTrain.toString());
+                electricTrain.setInfoProperty();
             } else {
                 electricTrain = new ElectricTrain(Integer.parseInt(eTrainID.getText()), Integer.parseInt(eTotalPlaces.getText()),
                         Integer.parseInt(eMaxSpeed.getText()), new Schedule(eDeparture.getText(), eDestination.getText(),

@@ -74,7 +74,7 @@ public class TramController {
                 tram.setVoltage(Integer.parseInt(eVoltage.getText()));
                 tram.setPowerSupply(cbPowerSupply.getValue());
                 tram.setNoisiness(Integer.parseInt(eNoisiness.getText()));
-                tram.setInfoProperty(tram.toString());
+                tram.setInfoProperty();
             } else {
                 tram = new Tram(Integer.parseInt(eTrainID.getText()), Integer.parseInt(eTotalPlaces.getText()),
                         Integer.parseInt(eMaxSpeed.getText()), new Schedule(eDeparture.getText(), eDestination.getText(),

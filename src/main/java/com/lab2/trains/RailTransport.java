@@ -67,13 +67,13 @@ public class RailTransport implements Serializable {
         this.maxSpeed = maxSpeed;
         this.schedule = schedule;
         this.driver = driver;
-        this.setInfoProperty(this.toTableString());
+        this.setInfoProperty();
     }
 
     public RailTransport() {}
 
-    public void setInfoProperty(String additionalInfo) {
-        this.trainInfo = additionalInfo;
+    public void setInfoProperty() {
+        this.trainInfo = this.toTableString();
     }
 
     public String toTableString() {
@@ -87,13 +87,4 @@ public class RailTransport implements Serializable {
         sb.append(this.maxSpeed);
         return sb.toString();
     }
-
-//    @Override
-//    public String toString() {
-//        return "id\n" + id + "\n" +
-//                "totalPlaces\n" + totalPlaces + "\n" +
-//                "maxSpeed\n" + maxSpeed + "\n" +
-//                "schedule\n" + schedule.toString() +
-//                "driver\n" + driver.toString() + "\n";
-//    }
 }

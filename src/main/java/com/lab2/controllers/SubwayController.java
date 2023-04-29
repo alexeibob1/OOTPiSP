@@ -74,7 +74,7 @@ public class SubwayController {
                 subway.setVoltage(Integer.parseInt(eVoltage.getText()));
                 subway.setPowerSupply(cbPowerSupply.getValue());
                 subway.setDepth(Integer.parseInt(eDepth.getText()));
-                subway.setInfoProperty(subway.toString());
+                subway.setInfoProperty();
             } else {
                 subway = new Subway(Integer.parseInt(eTrainID.getText()), Integer.parseInt(eTotalPlaces.getText()),
                         Integer.parseInt(eMaxSpeed.getText()), new Schedule(eDeparture.getText(), eDestination.getText(),
