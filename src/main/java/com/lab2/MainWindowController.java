@@ -160,32 +160,32 @@ public class MainWindowController {
 
 
         //hard code some examples
-        trainsList.addAll(
-                new RailTransport(372, 650, 150, new Schedule("Molodechno", "Minsk",
-                        LocalDate.parse("2023-02-01"), LocalDate.parse("2023-02-01")), new Driver(12, 627, "Alexei")),
-                new RailTransport(351, 670, 140, new Schedule("Minsk", "Borisov",
-                        LocalDate.parse("2023-04-02"), LocalDate.parse("2023-04-03")), new Driver(5, 425, "Yakov")),
-                new ElectricTrain(524, 635, 230, new Schedule("Pekin", "Seul",
-                        LocalDate.parse("2023-05-02"), LocalDate.parse("2023-05-03")), new Driver(23, 5345, "Xiaomi"),
-                        540, PowerSupply.IMP),
-                new ElectricTrain(7457, 1200, 150, new Schedule("Paris", "Berlin",
-                        LocalDate.parse("2023-04-12"), LocalDate.parse("2023-04-13")), new Driver(8, 452, "Tomas"),
-                        320, PowerSupply.DC),
-                new DieselTrain(653, 5, 76, new Schedule("Gudagai", "Molodechno",
-                        LocalDate.parse("2023-04-01"), LocalDate.parse("2023-04-02")), new Driver(15, 636, "Petr"), Fuel.PETROLEUM),
-                new Tram(743, 85, 65, new Schedule("Yakuba Kolasa station", "Peramogi station",
-                        LocalDate.parse("2023-04-02"), LocalDate.parse("2023-04-02")), new Driver(4, 234, "Anna"),
-                        654, PowerSupply.AC, 54),
-                new Tram(245, 90, 85, new Schedule("Lenina station", "Yakuba Kolasa station",
-                        LocalDate.parse("2023-04-05"), LocalDate.parse("2023-04-05")), new Driver(7, 345, "Kirill"),
-                        242, PowerSupply.IMP, 76),
-                new Subway(24745, 700, 90, new Schedule("Institut Kulturi", "Akademia Navuk",
-                        LocalDate.parse("2023-04-06"), LocalDate.parse("2023-04-06")), new Driver(13, 654, "Vadim"),
-                        1020, PowerSupply.AC, 25),
-                new Subway(738, 750, 100, new Schedule("Malinovka", "Uruchie",
-                        LocalDate.parse("2023-04-07"), LocalDate.parse("2023-04-07")), new Driver(3, 939, "Eugen"),
-                        1030, PowerSupply.AC, 20)
-        );
+//        trainsList.addAll(
+//                new RailTransport(372, 650, 150, new Schedule("Molodechno", "Minsk",
+//                        LocalDate.parse("2023-02-01"), LocalDate.parse("2023-02-01")), new Driver(12, 627, "Alexei")),
+//                new RailTransport(351, 670, 140, new Schedule("Minsk", "Borisov",
+//                        LocalDate.parse("2023-04-02"), LocalDate.parse("2023-04-03")), new Driver(5, 425, "Yakov")),
+//                new ElectricTrain(524, 635, 230, new Schedule("Pekin", "Seul",
+//                        LocalDate.parse("2023-05-02"), LocalDate.parse("2023-05-03")), new Driver(23, 5345, "Xiaomi"),
+//                        540, PowerSupply.IMP),
+//                new ElectricTrain(7457, 1200, 150, new Schedule("Paris", "Berlin",
+//                        LocalDate.parse("2023-04-12"), LocalDate.parse("2023-04-13")), new Driver(8, 452, "Tomas"),
+//                        320, PowerSupply.DC),
+//                new DieselTrain(653, 5, 76, new Schedule("Gudagai", "Molodechno",
+//                        LocalDate.parse("2023-04-01"), LocalDate.parse("2023-04-02")), new Driver(15, 636, "Petr"), Fuel.PETROLEUM),
+//                new Tram(743, 85, 65, new Schedule("Yakuba Kolasa station", "Peramogi station",
+//                        LocalDate.parse("2023-04-02"), LocalDate.parse("2023-04-02")), new Driver(4, 234, "Anna"),
+//                        654, PowerSupply.AC, 54),
+//                new Tram(245, 90, 85, new Schedule("Lenina station", "Yakuba Kolasa station",
+//                        LocalDate.parse("2023-04-05"), LocalDate.parse("2023-04-05")), new Driver(7, 345, "Kirill"),
+//                        242, PowerSupply.IMP, 76),
+//                new Subway(24745, 700, 90, new Schedule("Institut Kulturi", "Akademia Navuk",
+//                        LocalDate.parse("2023-04-06"), LocalDate.parse("2023-04-06")), new Driver(13, 654, "Vadim"),
+//                        1020, PowerSupply.AC, 25),
+//                new Subway(738, 750, 100, new Schedule("Malinovka", "Uruchie",
+//                        LocalDate.parse("2023-04-07"), LocalDate.parse("2023-04-07")), new Driver(3, 939, "Eugen"),
+//                        1030, PowerSupply.AC, 20)
+//        );
         printSpecificTrains();
     }
 }

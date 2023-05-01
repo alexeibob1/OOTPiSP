@@ -106,7 +106,7 @@ public class TextSerializer implements Serializable {
             String trainClassName = "";
             Class<?> trainClass = null;
             Class<?> innerClass = null;
-            while ((line = reader.readLine()) != null) {
+            while ((line = reader.readLine()) != null && state != 0) {
                 TokenType token = defineTokenType(line);
                 prevState = state;
                 state = transitions[state][token.ordinal()];
@@ -150,9 +150,16 @@ public class TextSerializer implements Serializable {
                     }
                 }
             }
+
+            if (state == 0) {
+                ErrorWindow alert = new ErrorWindow();
+                alert.showError(Alert.AlertType.ERROR, "Error!", "Error while txt deserialization", "During deserialization of TXT an error occurred. Please, try again");
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+
 
         for (RailTransport train : trains) {
             train.setInfoProperty();
