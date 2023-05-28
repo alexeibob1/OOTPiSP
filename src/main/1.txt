@@ -7,7 +7,7 @@ VALUE: 2023-02-01
 NAME: departure
 VALUE: Molodechno
 NAME: destination
-VALUE: Minsk
+VALUE: END
 END
 NAME: id
 VALUE: 372

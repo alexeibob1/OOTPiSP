@@ -10,7 +10,7 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class BinarySerializer implements Serializable {
+public class BinarySerializer implements Serializer {
     @Override
     public void serialize(ObservableList<RailTransport> trains, OutputStream outputStream) {
         List<RailTransport> serializableTrainList = new ArrayList<>(trains);

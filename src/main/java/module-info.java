@@ -6,6 +6,7 @@ module com.lab2 {
     requires com.google.gson;
     requires java.base;
     requires gson.extras;
+    requires org.apache.commons.codec;
 
     opens com.lab2 to javafx.fxml;
     exports com.lab2;

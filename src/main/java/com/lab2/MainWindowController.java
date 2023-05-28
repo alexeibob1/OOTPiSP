@@ -21,7 +21,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.time.LocalDate;
 
 public class MainWindowController {
     ObservableList<RailTransport> trainsList = FXCollections.observableArrayList();
@@ -94,7 +93,7 @@ public class MainWindowController {
         File file = fileChooser.showSaveDialog(currStage);
         if (file != null) {
             String extension = file.getName().substring(file.getName().lastIndexOf('.') + 1);
-            Serializable serializer = serializerFactory.getSerializerDescription(extension).getSerializer();
+            Serializer serializer = serializerFactory.getSerializerDescription(extension).getSerializer();
             serializer.serialize(trainsList, new FileOutputStream(file));
         }
     }
@@ -110,7 +109,7 @@ public class MainWindowController {
         if (file != null) {
             if (file.length() != 0) {
                 String extension = file.getName().substring(file.getName().lastIndexOf('.') + 1);
-                Serializable serializer = serializerFactory.getSerializerDescription(extension).getSerializer();
+                Serializer serializer = serializerFactory.getSerializerDescription(extension).getSerializer();
                 ObservableList<RailTransport> deserializationList = serializer.deserialize(new FileInputStream(file));
                 if (deserializationList.size() != 0) {
                     trainsList = deserializationList;

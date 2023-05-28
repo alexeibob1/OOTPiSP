@@ -12,7 +12,6 @@ import java.lang.reflect.Type;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import com.google.gson.typeadapters.*;
@@ -32,7 +31,7 @@ class LocalDateAdapterDeser implements com.google.gson.JsonDeserializer<LocalDat
     }
 }
 
-public class JsonSerializer implements Serializable {
+public class JsonSerializer implements Serializer {
     private final RuntimeTypeAdapterFactory<RailTransport> typeAdapterFactory = RuntimeTypeAdapterFactory.of(RailTransport.class, "type")
             .registerSubtype(RailTransport.class, "rail transport")
             .registerSubtype(ElectricTrain.class, "electric train")

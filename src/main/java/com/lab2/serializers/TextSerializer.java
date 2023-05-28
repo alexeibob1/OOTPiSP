@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class TextSerializer implements Serializable {
+public class TextSerializer implements Serializer {
 
     public void serializeObject(Object o, PrintWriter writer, boolean isInner) throws NoSuchFieldException, IllegalAccessException {
         Class<?> oClass = o.getClass();
@@ -91,7 +91,6 @@ public class TextSerializer implements Serializable {
                 {0, 0, 0, 4, 0, 0, 0},
                 {0, 0, 0, 0, 0, 0, 0}
         };
-        int[] finalState = {0, 0, 0, 0, 0, 1, 0};
         ArrayList<RailTransport> trains = new ArrayList<>();
 
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream))) {
@@ -159,8 +158,6 @@ public class TextSerializer implements Serializable {
             e.printStackTrace();
         }
 
-
-
         for (RailTransport train : trains) {
             train.setInfoProperty();
         }
@@ -172,7 +169,7 @@ public class TextSerializer implements Serializable {
         return line.substring(line.lastIndexOf(paramName) + paramName.length()).trim();
     }
 
-    public void invokeSetMethod(Class<?> objClass, Field field, Object obj, String fieldValue) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+    public void invokeSetMethod(Class<?> objClass, Field field, Object obj, String fieldValue) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException, InstantiationException {
         String fieldName = field.getName();
         String fieldTypeName = field.getType().getName().toLowerCase();
         String setMethodName = getSetMethodName(fieldName);
