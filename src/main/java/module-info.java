@@ -7,6 +7,9 @@ module com.lab2 {
     requires java.base;
     requires gson.extras;
     requires org.apache.commons.codec;
+    requires Base32Plugin;
+    requires Base64Plugin;
+    requires Plugin;
 
     opens com.lab2 to javafx.fxml;
     exports com.lab2;
