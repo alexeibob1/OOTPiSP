@@ -43,8 +43,7 @@ public class JsonSerializer implements Serializer {
         List<RailTransport> serializableTrainList = new ArrayList<>(trains);
         Gson gson = new Gson().newBuilder().registerTypeAdapterFactory(typeAdapterFactory).registerTypeAdapter(LocalDate.class, new LocalDateAdapterSer()).create();
         Type type = new TypeToken<ArrayList<RailTransport>>(){}.getType();
-        FileOutputStream fileOutputStream = (FileOutputStream) outputStream;
-        try (PrintWriter printWriter = new PrintWriter(fileOutputStream)) {
+        try (PrintWriter printWriter = new PrintWriter(outputStream)) {
             printWriter.println(gson.toJson(serializableTrainList, type));
         } catch (Exception e) {
             ErrorWindow alert = new ErrorWindow();
@@ -59,8 +58,7 @@ public class JsonSerializer implements Serializer {
         Gson gson = new Gson().newBuilder().registerTypeAdapterFactory(typeAdapterFactory).registerTypeAdapter(LocalDate.class, new LocalDateAdapterDeser()).create();
         Type type = new TypeToken<ArrayList<RailTransport>>(){}.getType();
         String json = "";
-        FileInputStream fileInputStream = (FileInputStream) inputStream;
-        try (BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(fileInputStream))) {
+        try (BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream))) {
             json = bufferedReader.readLine();
             trains = gson.fromJson(json, type);
             res.addAll(trains);

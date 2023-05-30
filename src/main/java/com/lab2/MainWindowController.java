@@ -6,31 +6,32 @@ import com.lab2.trains.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.util.StringConverter;
+import org.example.plugin.Plugin;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
+import java.io.*;
+import java.time.LocalDate;
+import java.util.HashMap;
+import java.util.Map;
 
 public class MainWindowController {
     ObservableList<RailTransport> trainsList = FXCollections.observableArrayList();
     ObservableList<RailTransport> currTrains = FXCollections.observableArrayList();
+    private Map<String, Plugin> plugins = new HashMap<>();
     @FXML
     private Button btnAdd;
 
     @FXML
     private Button btnDelete;
-
+    @FXML
+    private Menu btnFile;
     @FXML
     private Button btnEdit;
 
@@ -81,7 +82,7 @@ public class MainWindowController {
     }
 
     @FXML
-    void onBtnSaveToFileClicked(ActionEvent event) throws FileNotFoundException, InstantiationException, IllegalAccessException {
+    void onBtnSaveToFileClicked(ActionEvent event) throws IOException, InstantiationException, IllegalAccessException {
         if (trainsList.isEmpty()) {
             return;
         }
@@ -94,12 +95,26 @@ public class MainWindowController {
         if (file != null) {
             String extension = file.getName().substring(file.getName().lastIndexOf('.') + 1);
             Serializer serializer = serializerFactory.getSerializerDescription(extension).getSerializer();
-            serializer.serialize(trainsList, new FileOutputStream(file));
+            FileOutputStream fileOutputStream = new FileOutputStream(file);
+            serializer.serialize(trainsList, fileOutputStream);
+            fileOutputStream.close();
         }
     }
 
+    private Plugin isPluginExtension(String extension) {
+        for (String pluginName : this.plugins.keySet()) {
+            if (this.plugins.get(pluginName).getExtension().equals(extension)) {
+                return this.plugins.get(pluginName);
+            }
+        }
+
+        return null;
+    }
+
+
+
     @FXML
-    void onBtnOpenFileClicked(ActionEvent event) throws InstantiationException, IllegalAccessException, FileNotFoundException {
+    void onBtnOpenFileClicked(ActionEvent event) throws InstantiationException, IllegalAccessException, IOException {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Open file...");
         SerializerFactory serializerFactory = new SerializerFactory();
@@ -108,9 +123,23 @@ public class MainWindowController {
         File file = fileChooser.showOpenDialog(currStage);
         if (file != null) {
             if (file.length() != 0) {
-                String extension = file.getName().substring(file.getName().lastIndexOf('.') + 1);
+                FileInputStream fileInputStream = new FileInputStream(file);
+                byte[] fileBytes = fileInputStream.readAllBytes();
+                fileInputStream.close();
+                String fileName = file.getName();
+                String extension = fileName.substring(fileName.lastIndexOf('.') + 1);
+                Plugin plugin = isPluginExtension(extension);
+                if (plugin != null) {
+                    fileBytes = plugin.decode(fileBytes);
+                    fileName = fileName.substring(0, fileName.length() - extension.length() - 1); //to remove dot
+                }
+
+                extension = fileName.substring(fileName.lastIndexOf('.') + 1);
+
                 Serializer serializer = serializerFactory.getSerializerDescription(extension).getSerializer();
-                ObservableList<RailTransport> deserializationList = serializer.deserialize(new FileInputStream(file));
+
+                ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(fileBytes);
+                ObservableList<RailTransport> deserializationList = serializer.deserialize(byteArrayInputStream);
                 if (deserializationList.size() != 0) {
                     trainsList = deserializationList;
                     printSpecificTrains();
@@ -129,6 +158,65 @@ public class MainWindowController {
         }
     }
 
+    private void downloadPlugins() {
+        File jars = new File("src/main/java/com/lab2/plugins/jar");
+        File[] pluginsFiles = jars.listFiles((dir, name) -> name.toLowerCase().endsWith(".jar"));
+        for (File pluginFile : pluginsFiles) {
+            String pluginName = pluginFile.getName().substring(0, pluginFile.getName().lastIndexOf('.'));
+            try {
+                String pluginClassName = "org.example." + pluginName.toLowerCase() + "." + pluginName;
+                Class<?> pluginClass = this.getClass().getClassLoader().loadClass(pluginClassName);
+                Plugin plugin = (Plugin) pluginClass.getConstructor().newInstance();
+                this.plugins.put(pluginName, plugin);
+            } catch (Exception e) {
+                new ErrorWindow().showError(Alert.AlertType.ERROR, "Error", "Unable to load plugin", "Error happened when downloading plugin");
+            }
+        }
+        initSavingOptions();
+    }
+
+    private void initSavingOptions() {
+        for (String pluginName : this.plugins.keySet()) {
+            MenuItem menuItem = new MenuItem();
+            menuItem.setId("btn" + pluginName);
+            menuItem.setText("Save... (" + this.plugins.get(pluginName).getName() + ")");
+            menuItem.setOnAction(actionEvent -> {
+                try {
+                    if (trainsList.isEmpty()) return;
+                    FileChooser fileChooser = new FileChooser();
+                    fileChooser.setTitle("Save to file...");
+                    SerializerFactory serializerFactory = new SerializerFactory();
+                    serializerFactory.setFilters(fileChooser);
+                    Stage currStage = (Stage)btnAdd.getScene().getWindow();
+                    File file = fileChooser.showSaveDialog(currStage);
+                    if (file != null) {
+                        //get extension of selected file for saving
+                        String extension = file.getName().substring(file.getName().lastIndexOf('.') + 1);
+                        //get serializer according to file extension
+                        Serializer serializer = serializerFactory.getSerializerDescription(extension).getSerializer();
+                        //stream for storing serialized and encoded data
+                        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+                        serializer.serialize(trainsList, outputStream);
+                        Plugin plugin = this.plugins.get(pluginName);
+                        String encodingExtension = this.plugins.get(pluginName).getExtension();
+
+                        String encodedFileName = file.getPath() + "." + encodingExtension;
+                        file.renameTo(new File(encodedFileName));
+
+                        FileOutputStream fileOutputStream = new FileOutputStream(encodedFileName);
+                        fileOutputStream.write(plugin.encode(outputStream.toByteArray()));
+                        fileOutputStream.close();
+                        outputStream.close();
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+            });
+            btnFile.getItems().add(menuItem);
+        }
+    }
+
     @FXML
     void initialize() {
         cbTrainTypes.getItems().addAll(new TrainType(RailTransport.class, "Rail Transport", "addRailTransport.fxml"),
@@ -136,8 +224,7 @@ public class MainWindowController {
                 new TrainType(DieselTrain.class, "Diesel Train", "addDieselTrain.fxml"),
                 new TrainType(Tram.class, "Tram", "addTram.fxml"),
                 new TrainType(Subway.class, "Subway", "addSubway.fxml")
-                );
-
+        );
 
         tcTrainID.setCellValueFactory(new PropertyValueFactory<>("id"));
         tcTrainInfo.setCellValueFactory(new PropertyValueFactory<>("trainInfo"));
@@ -157,6 +244,7 @@ public class MainWindowController {
             }
         });
 
+        downloadPlugins();
 
         //hard code some examples
 //        trainsList.addAll(

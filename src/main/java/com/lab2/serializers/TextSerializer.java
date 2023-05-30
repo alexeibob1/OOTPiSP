@@ -46,8 +46,7 @@ public class TextSerializer implements Serializer {
     }
     @Override
     public void serialize(ObservableList<RailTransport> trains, OutputStream outputStream) {
-        FileOutputStream fileOutputStream = (FileOutputStream) outputStream;
-        try (PrintWriter writer = new PrintWriter(fileOutputStream)) {
+        try (PrintWriter writer = new PrintWriter(outputStream)) {
             for (RailTransport train : trains) {
                 serializeObject(train, writer, false);
                 writer.println();

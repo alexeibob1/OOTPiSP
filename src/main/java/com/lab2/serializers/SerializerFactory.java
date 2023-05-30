@@ -16,7 +16,7 @@ public class SerializerFactory {
 
     public void setFilters(FileChooser fileChooser) {
         for (String extension : serializers.keySet()) {
-            fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter(serializers.get(extension).toString(), "*." + extension));
+            fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter(serializers.get(extension).toString(), "*." + extension, "*." + extension + ".base32", "*." + extension + ".base64"));
         }
     }
 
